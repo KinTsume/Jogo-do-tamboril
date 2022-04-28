@@ -28,9 +28,9 @@ let createEnemy = ()=> {
     createdEnemy.style.top = 0;
     createdEnemy.style.left = 0
     let enemy = {
-        direction: [1, 1],
+        direction: [0, 1],
         position: [0,0],
-        speed: 1,
+        speed: 5,
         reference: createdEnemy
     }
     enemyList.push(enemy);
@@ -50,7 +50,33 @@ let moveEnemy = (enemy) => {
     let direction = enemy.direction;
     let position = enemy.position;
     let speed = enemy.speed;
-    enemy.position = [position[0] + direction[0] * speed, position[1] + direction[1] * speed];
+
+    let enemyWidth = parseInt (window.getComputedStyle(enemy.reference).getPropertyValue("width"));
+    let enemyHeight = parseInt (window.getComputedStyle(enemy.reference).getPropertyValue("height"));
+
+    if(position[0] >= 0){
+        if((position[0] + enemyWidth) <= 600){
+            enemy.position[0] = position[0] + direction[0] * speed;           
+        }else{
+            enemy.position[0] = 600 - enemyWidth;
+            enemy.direction[0] = -direction[0];
+        }
+    } else {
+        enemy.position[0] = 0;
+        enemy.direction[0] = -direction[0];
+    }
+
+    if(position[1] >= 0){
+        if((position[1] + enemyHeight) <= 600){
+            enemy.position[1] = position[1] + direction[1] * speed;           
+        }else{
+            enemy.position[1] = 600 - enemyHeight;
+            enemy.direction[1] = -direction[1];
+        }
+    } else {
+        enemy.position[1] = 0;
+        enemy.direction[1] = -direction[1];
+    }
 
     enemy.reference.style.left = position[0] +"px";
     enemy.reference.style.top =  position[1] +"px";
@@ -62,7 +88,7 @@ let moveEnemy = (enemy) => {
 let player = {
     reference: document.getElementById('player'),
     position: [0, 0],
-    direction: [0, 0],
+    direction: [1, 1],
     accel: 5
 }
 
@@ -70,11 +96,49 @@ let movePlayer = () => {
     let position = player.position;
     let direction = player.direction;
 
-    player.position.left = position[0] + direction[0];
-    player.position.top = position[1] + direction[1];
+    let playerWidth = parseInt (window.getComputedStyle(player.reference).getPropertyValue("width"));
+    let playerHeight = parseInt (window.getComputedStyle(player.reference).getPropertyValue("height"));
+    if(position[0] >= 0){
+        if((position[0] + playerWidth) <= 600){
+            player.position[0] = position[0] + direction[0];           
+        }else{
+            player.position[0] = 600 - playerWidth;
+            player.direction[0] = 0;
+        }
+    } else {
+        player.position[0] = 0;
+        player.direction[0] = 0;
+    }
+
+    if(position[1] >= 0){
+        if((position[1] + playerHeight) <= 600){
+            player.position[1] = position[1] + direction[1];           
+        }else{
+            player.position[1] = 600 - playerHeight;
+            player.direction[1] = 0;
+        }
+    } else {
+        player.position[1] = 0;
+        player.direction[1] = 0;
+    }
 
     player.reference.style.left = player.position[0]+"px";
     player.reference.style.top = player.position[1]+"px";
+}
+
+let playerControls = (event) => {
+    if(event.key === "w"){
+        player.direction[1] -= 0.1;
+        console.log("decreasing!");
+    } else if(event.key === "s"){
+        player.direction[1] += 0.1;
+    }
+
+    if(event.key === "d"){
+        player.direction[0] += 0.1;
+    } else if(event.key === "a"){
+        player.direction[0] -= .1;
+    }
 }
 
 
@@ -88,4 +152,4 @@ startMenu.addEventListener('click', () => {
     createEnemy();
 });
 
-window.addEventListener('keydown', movePlayer);
+window.addEventListener('keydown', playerControls);
