@@ -12,9 +12,21 @@
     <div id="game">
         <div id="black-hole"></div>
         <div id="game-start">
-            Start game
+            Welcome to the Anglerfish game!
+            <p>Your goal is to guide the anglerfish back to their world trhough the wormhole in the center</p>
+            <p>Controls:</p>
+            <ul>
+                <li>W-A-S-D: Move the astronaut (be cautious, the movement is based on acceleration)</li> <br>
+                <li>Space (without the scout): spawn the scout and send on the mouse direction</li> <br>
+                <li>Space (with the scout): create a sound wave. Anglerfishes near the sound will go towards its direction. (use 
+                    this to guide them)</li>
+            </ul>
+            <p>Click anywhere to start!</p>
         </div>
+        <p id="score">Score: 0</p>
         <img src="./img/astronaut.png" id="player">
+        <img src="./img//little_scout.png" id="scout" class="hidden">
+        <img src="./img/Soundwave.png" alt="" id="sound" class="hidden">
     </div>
     
     <script src="script.js"></script>
